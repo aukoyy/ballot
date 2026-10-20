@@ -1,4 +1,7 @@
 
+# launch file for dev debugger for chrome
+.vscode/launch.json
+
 # Created by https://www.gitignore.io/api/node,redis,macos,webstorm
 # Edit at https://www.gitignore.io/?templates=node,redis,macos,webstorm
 /data

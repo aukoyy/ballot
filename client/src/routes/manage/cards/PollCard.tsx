@@ -10,6 +10,7 @@ interface PollCardProps {
   updatePoll: (pollId: string) => void;
   deletePoll: (pollId: string) => void;
   conductPoll: (pollId: string) => void;
+  showResults: (pollId: string) => void;
 }
 
 export const PollCard = (props: PollCardProps) => {
@@ -30,11 +31,15 @@ export const PollCard = (props: PollCardProps) => {
   };
 
   const conductPoll = (event: React.MouseEvent<HTMLElement>) => {
-    props.conductPoll(poll.id)
+    props.conductPoll(poll.id);
   };
 
   const deletePoll = () => {
     props.deletePoll(poll.id);
+  };
+
+  const showResults = () => {
+    props.showResults(poll.id);
   };
 
   const cardClassName = classNames('mt-8 p-4 shadow rounded-t-lg', {
@@ -45,7 +50,12 @@ export const PollCard = (props: PollCardProps) => {
     <div>
       <div className={cardClassName}>
         <div className="flex justify-between">
-          <h2 className="text-2xl text-gray-800">{poll.title}</h2>
+          <h2
+            className="text-2xl text-gray-800 cursor-pointer"
+            onClick={showResults}
+          >
+            {poll.title}
+          </h2>
           {!archived && (
             <div className="flex">
               <i
@@ -72,7 +82,7 @@ export const PollCard = (props: PollCardProps) => {
               <i
                 title="Conduct this poll"
                 onClick={conductPoll}
-                className="fas fa-play ml-8 fa-lg opacity-50 hover:opacity-75 color-orange-500 cursor-pointer" 
+                className="fas fa-play ml-8 fa-lg opacity-50 hover:opacity-75 color-orange-500 cursor-pointer"
               />
             </div>
           )}

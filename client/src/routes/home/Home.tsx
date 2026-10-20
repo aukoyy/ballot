@@ -2,17 +2,50 @@ import * as React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { FormEvent, useState } from 'react';
 import { ChangeEvent } from 'react';
+import { backendAddress } from '../../config';
+import { RouteMap } from '../RouteMap';
+import { useActivePoll } from '../../api/auth/ActivePollContext';
 
 interface HomeProps {}
 
 type Props = RouteComponentProps<{}> & HomeProps;
 
+enum ErrorMessage {
+  POLL_NOT_FOUND = 'Poll not found',
+  SERVER_ERROR = 'There was an error connecting to the server',
+}
+
 const Home = (props: Props) => {
   const [pin, setPin] = useState<string>('');
   const [name, setName] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const { addRespondent } = useActivePoll();
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    try {
+      const fetchPoll = async () => {
+        const result = await fetch(`${backendAddress}/api/polls/pin/${pin}`, {
+          method: 'GET',
+        });
+        result
+          .json()
+          .then(res => {
+            if (!res.active) {
+              // TODO: remove !
+              addRespondent(name);
+              props.history.push(RouteMap.vote.createPath(res.id, name));
+            }
+          })
+          .catch(err =>
+            setErrorMessage(`${ErrorMessage.POLL_NOT_FOUND}: ${err}`)
+          );
+      };
+      fetchPoll();
+    } catch (err) {
+      setErrorMessage(`${ErrorMessage.SERVER_ERROR}: ${err}`);
+    }
   };
 
   return (
@@ -63,6 +96,9 @@ const Home = (props: Props) => {
             ENTER
           </button>
         </form>
+        {errorMessage && (
+          <p className="mt-8 text-red-700 font-semibold">{errorMessage}</p>
+        )}
       </div>
     </div>
   );

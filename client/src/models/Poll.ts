@@ -1,4 +1,5 @@
 import { Question } from './Question';
+import { Result } from './Result';
 
 export interface Poll {
   id: string;
@@ -7,4 +8,5 @@ export interface Poll {
   archived: boolean;
   title: string;
   questions: Question[];
+  results: Result[];
 }

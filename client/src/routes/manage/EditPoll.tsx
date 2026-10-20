@@ -41,12 +41,9 @@ const EditPoll = (props: CreateComponentProps) => {
     if (!isCreatingNewPoll) {
       try {
         const fetchPoll = async () => {
-          const result = await fetch(
-            `${backendAddress}/api/polls/${pollId}`,
-            {
-              method: 'GET',
-            }
-          );
+          const result = await fetch(`${backendAddress}/api/polls/${pollId}`, {
+            method: 'GET',
+          });
           result
             .json()
             .then(res => {

@@ -9,6 +9,11 @@ router.get('/:id', async (req: Request, res: Response) => {
   res.status(200).send(poll);
 });
 
+router.get('/pin/:pin', async (req: Request, res: Response) => {
+  const poll = await Poll.findOne({ pollPin: req.params.pin });
+  res.status(200).send(poll);
+});
+
 router.get('/user/:userId', async (req: Request, res: Response) => {
   const userPolls = await Poll.find({ userId: req.params.userId });
   res.status(200).send(userPolls);

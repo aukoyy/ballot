@@ -1,6 +1,6 @@
 import { AuthContextValues } from './AuthContext';
 import { useEffect, useState } from 'react';
-import { backendAddress } from '../../config'
+import { backendAddress } from '../../config';
 import {
   clearRefreshTokenFromLocalStorage,
   getRefreshTokenFromLocalStorage,
@@ -36,19 +36,14 @@ export const CreateAuthHook = (): AuthContextValues => {
       const userId = getUserIdFromLocalStorage();
       try {
         const fetchUser = async () => {
-          console.log(backendAddress)
-          const result = await fetch(
-            `${backendAddress}/api/users/${userId}`,
-            {
-              method: 'GET',
-            }
-          );
+          const result = await fetch(`${backendAddress}/api/users/${userId}`, {
+            method: 'GET',
+          });
           result.json().then(res => setUser({ ...res, id: res._id }));
         };
         fetchUser();
-        
       } catch (err) {
-        console.log('error refetching user in hook');
+        console.log('error: re-fetching user in hook');
         console.log(err);
       }
     }

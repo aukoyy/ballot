@@ -90,7 +90,7 @@ router.post('/logout', async (req: Request, res: Response) => {
     res.status(400).send(err);
   }
 
-  // Further, logout in this way should primerely happen on the frontend
+  // Further, logout in this way should primarily happen on the frontend
   res.send(`Token added to blacklist`);
 });
 
